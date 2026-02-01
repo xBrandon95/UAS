@@ -5,10 +5,13 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  Index,
 } from 'typeorm';
 import { Usuario } from '../../usuarios/entities/usuario.entity';
 
 @Entity('unidades')
+@Index(['nombre']) // Índice para búsquedas por nombre
+@Index(['activo']) // Índice para filtros por estado
 export class Unidad {
   @PrimaryGeneratedColumn()
   id: number;
@@ -22,12 +25,14 @@ export class Unidad {
   @Column({ default: true })
   activo: boolean;
 
-  @OneToMany(() => Usuario, (usuario) => usuario.unidad)
+  @OneToMany(() => Usuario, (usuario) => usuario.unidad, {
+    cascade: false, // No eliminar usuarios al eliminar unidad
+  })
   usuarios: Usuario[];
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamp' })
   creadoEn: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'timestamp' })
   actualizadoEn: Date;
 }

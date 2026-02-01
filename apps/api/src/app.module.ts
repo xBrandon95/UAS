@@ -14,7 +14,7 @@ import { UnidadesModule } from './modules/unidades/unidades.module';
       envFilePath: '.env',
     }),
 
-    // Configuración de TypeORM con MySQL
+    // Configuración de TypeORM con Postgres
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: getDatabaseConfig,

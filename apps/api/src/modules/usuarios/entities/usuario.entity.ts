@@ -8,6 +8,7 @@ import {
   BeforeUpdate,
   ManyToOne,
   JoinColumn,
+  Index,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Unidad } from '../../unidades/entities/unidad.entity';
@@ -19,6 +20,8 @@ export enum RolUsuario {
 }
 
 @Entity('usuarios')
+@Index(['usuario']) // Índice para búsquedas rápidas por usuario
+@Index(['rol']) // Índice para filtros por rol
 export class Usuario {
   @PrimaryGeneratedColumn()
   id: number;
@@ -42,17 +45,20 @@ export class Usuario {
   @Column({ nullable: true })
   unidadId: number;
 
-  @ManyToOne(() => Unidad, (unidad) => unidad.usuarios, { eager: true })
+  @ManyToOne(() => Unidad, (unidad) => unidad.usuarios, {
+    eager: true,
+    onDelete: 'SET NULL', // Si se elimina la unidad, el usuario queda sin unidad
+  })
   @JoinColumn({ name: 'unidadId' })
   unidad: Unidad;
 
   @Column({ default: true })
   activo: boolean;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamp' }) // Más preciso en PostgreSQL
   creadoEn: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'timestamp' })
   actualizadoEn: Date;
 
   @BeforeInsert()

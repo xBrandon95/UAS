@@ -4,13 +4,18 @@
   "private": true,
   "scripts": {
     "dev": "turbo run dev",
+    "dev:api": "turbo run dev --filter=api",
+    "dev:client": "turbo run dev --filter=client",
+    "dev:full": "pnpm db:up && pnpm dev",
     "build": "turbo run build",
     "lint": "turbo run lint",
-    "db:up": "cd apps/api && docker-compose up -d",
-    "db:down": "cd apps/api && docker-compose down",
-    "db:logs": "cd apps/api && docker-compose logs -f",
-    "db:reset": "cd apps/api && docker-compose down -v && docker-compose up -d",
-    "dev:full": "pnpm db:up && pnpm dev"
+    "db:up": "docker-compose up -d",
+    "db:down": "docker-compose down",
+    "db:logs": "docker-compose logs -f postgres",
+    "db:pgadmin": "docker-compose logs -f pgadmin",
+    "db:restart": "docker-compose restart",
+    "db:reset": "docker-compose down -v && docker-compose up -d",
+    "db:ps": "docker-compose ps"
   },
   "license": "ISC",
   "packageManager": "pnpm@10.28.0",
