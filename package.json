@@ -9,6 +9,7 @@
     "dev:full": "pnpm db:up && pnpm dev",
     "build": "turbo run build",
     "lint": "turbo run lint",
+    "seed": "pnpm --filter=api seed",
     "db:up": "docker-compose up -d",
     "db:down": "docker-compose down",
     "db:logs": "docker-compose logs -f postgres",

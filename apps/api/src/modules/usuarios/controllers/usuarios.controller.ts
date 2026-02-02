@@ -22,13 +22,6 @@ import { RolUsuario } from '../entities/usuario.entity';
 export class UsuariosController {
   constructor(private readonly usuariosService: UsuariosService) {}
 
-  // Endpoint temporal sin autenticación para crear el primer usuario admin
-  // TODO: Eliminar o proteger después de crear el primer admin
-  @Post('configuracion-inicial')
-  async configuracionInicial(@Body() crearUsuarioDto: CrearUsuarioDto) {
-    return this.usuariosService.crear(crearUsuarioDto);
-  }
-
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(RolUsuario.ADMIN)
