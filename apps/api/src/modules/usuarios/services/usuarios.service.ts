@@ -33,7 +33,7 @@ export class UsuariosService {
       );
     }
 
-    // Si es admin, asegurar que unidadId sea null
+    // Si es admin, asegurar que unidadId sea undefined
     if (crearUsuarioDto.rol === RolUsuario.ADMIN) {
       crearUsuarioDto.unidadId = undefined;
     }
@@ -87,6 +87,7 @@ export class UsuariosService {
   ): Promise<Usuario> {
     const usuario = await this.obtenerPorId(id);
 
+    // Validar si el nombre de usuario ya existe
     if (
       actualizarUsuarioDto.usuario &&
       actualizarUsuarioDto.usuario !== usuario.usuario
@@ -103,15 +104,19 @@ export class UsuariosService {
     // Validar unidadId según el rol
     if (actualizarUsuarioDto.rol) {
       if (actualizarUsuarioDto.rol === RolUsuario.ADMIN) {
-        actualizarUsuarioDto.unidadId = undefined;
+        // Si cambia a admin, remover la unidad
+        usuario.unidadId = null;
       } else if (!actualizarUsuarioDto.unidadId && !usuario.unidadId) {
+        // Si no es admin y no tiene unidad (ni en el DTO ni en el usuario actual)
         throw new BadRequestException(
           'Los usuarios con rol operador o supervisor deben tener una unidad asignada',
         );
       }
     }
 
+    // Asignar los campos del DTO al usuario
     Object.assign(usuario, actualizarUsuarioDto);
+
     return await this.usuariosRepository.save(usuario);
   }
 

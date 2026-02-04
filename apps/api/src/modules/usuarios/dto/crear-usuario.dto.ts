@@ -39,7 +39,7 @@ export class CrearUsuarioDto {
   @IsNotEmpty({
     message: 'El ID de unidad es obligatorio para roles que no sean admin',
   })
-  unidadId?: number;
+  unidadId?: number | null;
 
   @IsBoolean()
   @IsOptional()
