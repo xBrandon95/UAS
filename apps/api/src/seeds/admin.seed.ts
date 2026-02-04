@@ -3,7 +3,6 @@ import {
   Usuario,
   RolUsuario,
 } from '../modules/usuarios/entities/usuario.entity';
-import * as bcrypt from 'bcrypt';
 
 export async function seedAdmin(dataSource: DataSource): Promise<void> {
   const usuarioRepository = dataSource.getRepository(Usuario);
@@ -17,13 +16,10 @@ export async function seedAdmin(dataSource: DataSource): Promise<void> {
     return;
   }
 
-  const salt = await bcrypt.genSalt(10);
-  const passwordHasheado = await bcrypt.hash('admin123', salt);
-
   const admin = usuarioRepository.create({
     nombre: 'Administrador',
     usuario: 'admin',
-    password: passwordHasheado,
+    password: 'admin123',
     rol: RolUsuario.ADMIN,
     activo: true,
   });
